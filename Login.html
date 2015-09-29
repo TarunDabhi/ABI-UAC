@@ -1,0 +1,273 @@
+<html>
+<head>
+	<title>Sign-in</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  	<!--Added for submit button-->
+  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  
+	<style type="text/css">
+	body
+	{
+		/*background: url(bg.png) no-repeat;
+		/*position: -400px 0 0 0;*/
+		background-size: 1200px 670px;
+		background-color: #F7981D;
+		font-family: sans-serif;
+	}
+	#main_canvas
+	{
+		height:300px;
+		width:700px;
+		/*background-color:#777777;*/
+		margin-left: auto;
+		margin-right: auto;
+		color: #000000;
+	}
+	#header_canvas
+	{
+		height:120px;
+		width:700px;
+		/*background-color:#777777;*/
+		margin-left: auto;
+		margin-right: auto;
+		color: #FFFFFF;
+		font-size: 50px;
+	}
+	#signin:hover
+	{
+		text-decoration: underline;
+	}
+	.row
+	{
+		height: 40px;
+		width: 700px;
+	}
+	.lbl1
+	{
+		height: 40px;
+		width: 305px;
+		padding: 0 0 0 252px;
+		float: left;
+	}
+	.lbl2
+	{
+		height: 40px;
+		width: 305px;
+		padding: 0 0 0 256px;
+		float: left;
+	}	
+	.lbl3
+	{
+		height: 40px;
+		width: 350px;
+		padding: 0 0 0 280px;
+		float: left;
+	}
+	.txtbox_container, .lbl_container
+	{
+		height: 40px;
+		width: 305px;
+		float: left;
+	}
+	select
+	{
+		width: 140px;
+	}
+	textarea:focus, input:focus
+	{
+    	outline: 0;
+	}
+	#username:focus::-webkit-input-placeholder
+	{
+		color: #F7981D;
+	}
+	#password:focus::-webkit-input-placeholder
+	{
+		color: #F7981D;
+	}
+	#username
+	{
+		width: 220px;
+	    border: none;
+	    height: 25px;
+	    color: #FFFFFF;
+	    background-color: #F7981D;
+	    background-position: -455px -170px;
+	    border: solid 1px;
+    	padding: 5px;
+    	text-transform:uppercase;
+	}
+	#password
+	{
+		width: 220px;
+	    border: none;
+	    height: 25px;
+	    color: #FFFFFF;
+	    background-color: #F7981D;
+	    background-position: -600px -370px;	    
+		border: solid 1px;
+    	padding: 5px;
+    	text-transform:uppercase;
+	}
+	#username::-webkit-input-placeholder,
+	#password::-webkit-input-placeholder
+	{
+	  color: #FFFFFF;
+	  text-transform:capitalize;
+	}
+	span:hover
+	{
+		cursor: pointer;
+	}
+	span
+	{
+		color: #FFFFFF;
+		border-color: black;
+		width: 150px;
+		font-size: 20px;
+	}
+	.btn-warning
+	{
+		background-color: orange;
+		border-color: black;
+		width: 150px;
+		font-size: 20px;
+	}
+	#eye
+	{
+		cursor: pointer;
+	}
+	input
+	{
+		font-family: sans-serif;
+		font-size: 16px;
+	}
+	</style>
+	<script type="text/javascript">
+
+	function submitOnEnter(e)//Login when pressed enter(keyCode = 13)
+	{	
+	    if (e.keyCode == 13) {
+	        showHome();
+	    }
+	}
+	
+	function showHome()
+	{
+		if($("#username").val() =="admin" && $("#password").val() == "admin")
+		{
+			$("#username").val("");
+			$("#password").val("");
+			window.parent.location.href = "Home.html";			
+		}
+		else
+		{
+			$("#wrongCredential").fadeIn('slow');
+			$("#wrongCredential").fadeOut(4000);
+		}
+	}
+	function hidePassword()
+	{
+		$("#password").attr('type','password');
+	}
+	function showPassword()
+	{
+		$("#password").attr('type','text');
+	}
+	function setCookie() {
+		var cname = "ADUserID";
+		var cvalue = document.getElementById("username").value;
+	    var d = new Date();
+	    d.setTime(d.getTime() + (1*60*60*1000));//Expires after one hour
+	    var expires = "expires=" + d.toGMTString();
+	    document.cookie = cname+"="+cvalue+"; "+expires;
+	    //alert(document.cookie);
+	}
+
+	function getCookie() {
+		var cname = "ADUserID";
+	    var name = cname + "=";
+	    var ca = document.cookie.split(';');
+	    for(var i=0; i<ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0)==' ') c = c.substring(1);
+	        if (c.indexOf(name) == 0) {
+	            //return c.substring(name.length, c.length);
+	            alert("ADUserID : " + c.substring(name.length, c.length));
+	        }
+	    }
+	    //return "";
+	    //alert("");
+	}
+	function delCookie() {
+		document.cookie='ADUserID=;expires=Thu, 01 Jan 1970 00:00:00 UTC';
+	}
+	
+
+	function checkCookie() {
+	    var user=getCookie("username");
+	    if (user != "") {
+	        alert("Welcome again " + user);
+	    } else {
+	       user = prompt("Please enter your name:","");
+	       if (user != "" && user != null) {
+	           setCookie("ADUserID", user, 30);
+	       }
+	    }
+	}
+	</script>
+</head>
+<body onload="javaScript:delCookie()">
+	<div id="abimg" style="margin: 150px 0 0 575px;">
+		<img src="img/AB_InBev_logo.png">
+	</div>
+
+	<div id="header_canvas">
+		<br/>
+			<h2 style="margin-left: -50px;" align="center">Login</h2>
+		<br/>
+	</div>	
+
+	<div id="main_canvas">
+	<br/>
+
+		<div id="row1" class="row">
+			<div id="r1c1" class="lbl_container">
+				<!--span class="lbl1">Username : </span-->
+			</div>
+			<div id="r1c2" class="txtbox_container">
+				<input id="username" onblur="javaScript:setCookie()" type="text" name="username" placeholder="Username" maxlength="15" />
+			</div>
+		</div>
+
+		<div id="row2" class="row">
+			<div id="r2c1" class="lbl_container">
+				<!--span class="lbl2">Password : </span-->
+			</div>
+			<div id="r2c2" class="txtbox_container">
+				<input id="password" type="password" name="password" placeholder="Password" 
+				maxlength="15" onkeydown="submitOnEnter(event)"/>
+				<img id="eye" src="eye.png" onmousedown="showPassword()" onmouseup="hidePassword()" onmouseout="hidePassword()" />
+			</div>
+		</div>
+		<br/>
+		<div id="row3" class="row">
+			<div id="r3c1" class="lbl_container">
+			<div class="lbl3">
+				<!--input type="button" id="addbutton" value="Add" onclick="insComboBoxRow(false)"/-->
+			</div>
+			</div>
+			<div id="r3c2" class="txtbox_container">
+				<!--button type="button" onclick="javaScript:showHome()">Login</button-->
+				<!--button type="button" class="btn btn-warning" onclick="javaScript:showHome()">Login</button-->
+				<span id="signin" onclick="javaScript:showHome()">Sign-In</span>
+				<span id="wrongCredential" style="display:none;"> | Wrong Credential!</span>
+				<!--button type="button" onclick="javaScript:getCookie()">get</button>
+				<button type="button" onclick="javaScript:delCookie()">del</button-->
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

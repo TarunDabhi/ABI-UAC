@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AB InBev</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<style type="text/css">
+	#header_canvas
+	{
+		height:140px;
+		width:1200px;
+		background-color:#FDF6C9;
+		margin-left: auto;
+		margin-right: auto;
+		color: #ff0000;
+	}
+	#main_canvas
+	{
+		height:700px;
+		width:1200px;
+		/*background-color:#FDF6C9;*/
+		margin-left: auto;
+		margin-right: auto;
+		color: #ff0000;
+	}
+	#benner
+	{
+		width: 1213px;
+		height: 140px;
+		margin-left: -4px;
+	}
+	#header
+	{
+		height:30px;
+		width:1200px;
+		/*background-color:#FDF000;*/
+		margin-left: auto;
+		margin-right: auto;
+		color: #ff0000;
+	}
+	#body_canvas
+	{
+		height:670px;
+		width:1200px;
+		/*background-color:#FDF000;*/
+		margin-left: auto;
+		margin-right: auto;
+		color: #ff0000;		
+	}
+	#page_display
+	{
+		height:0px;
+		width:1200px;
+		border: none;
+	}
+	a
+	{
+		color: #000000;
+	}
+	</style>
+	<script type="text/javascript">
+	function change_page(page_no)
+	{
+
+		$('#link1, #link2, #link3, #link4').css('font-weight','normal');
+		if(document.getElementById("body_bg_img").style.display=="block")
+		{
+			document.getElementById("body_bg_img").style.display="none";
+			document.getElementById("page_display").style.height="670px"
+		}
+		if(page_no==0)
+		{
+			document.getElementById("page_display").src = "ABIUserMaintenance.html";
+			$('#link1').css('font-weight','bold');
+		}
+		else if(page_no==1)
+		{
+			document.getElementById("page_display").src = "countryAssignment.html";
+			$('#link2').css('font-weight','bold');
+		}
+		else if(page_no==2)
+		{
+			document.getElementById("page_display").src = "ABIMeasureMaintenance.html";
+			$('#link3').css('font-weight','bold');
+		}
+		else if(page_no==3)
+		{
+			document.getElementById("page_display").src = "measureAssignment_V2.html";
+			$('#link4').css('font-weight','bold');
+		}	
+	}
+	function getCookie() {
+		var cname = "ADUserID";
+	    var name = cname + "=";
+	    var ca = document.cookie.split(';');
+	    for(var i=0; i<ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0)==' ') c = c.substring(1);
+	        if (c.indexOf(name) == 0) {
+	            //return c.substring(name.length, c.length);
+	            //alert("ADUserID : " + c.substring(name.length, c.length));
+	            break;
+	        }
+	        else
+	        {
+	        	window.parent.location.href = "Login.html";
+	        }
+	    }
+	}
+	</script>
+</head>
+<body style="font-family: sans-serif;" onload="javaScript:getCookie()">
+	<div id="header_canvas">
+		<img id="benner" src="ABI_banner.jpg"/>
+	</div>
+
+	<div id="main_canvas">
+		<div id="header">
+		 	| <a id="link1" href="#" onclick="change_page(0)">User Access By Country</a> |
+			<a id="link2" href="#" onclick="change_page(1)">New Country Assignment</a> |
+			<a id="link3" href="#" onclick="change_page(2)">User Access By Category</a> |
+			<a id="link4" href="#" onclick="change_page(3)">New Measure Assignment</a> | 
+		</div>
+		<div id="body_canvas">
+			<img id="body_bg_img" src="bg.png" style="width:1200px; height:670px;display:block;">
+			<iframe id="page_display" src=""></iframe>
+		</div>		
+	</div>
+</body>
+</html>

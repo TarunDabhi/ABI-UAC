@@ -1,0 +1,463 @@
+<html>
+<head>
+	<title>ABI User Maintenance</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+	<!--Added for submit button-->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+	<style type="text/css">
+	body
+	{
+		background-size: 1200px 670px;
+		background-color: #F7981D;
+		font-family: sans-serif;
+	}
+	#main_canvas
+	{
+		height:300px;
+		width:700px;
+		/*background-color:#777777;*/
+		margin-left: auto;
+		margin-right: auto;
+		color: #000000;
+	}
+	#header_canvas
+	{
+		height:100px;
+		width:700px;
+		/*background-color:#777777;*/
+		margin-left: auto;
+		margin-right: auto;
+		color: #000000;
+	}
+	#user_id
+	{
+		width: 120px;
+	    height: 20px;
+	    border: none;
+	    color: #000000;
+	    text-align: center;
+	    /*background-image: url(bg.png);*/
+	    background-color: #F7981D;
+	    background-position: -443px -170px;
+	}
+	#user_id:focus
+	{
+		outline: 0;	
+	}
+	
+	#user_id::-webkit-input-placeholder
+	{
+	  color: #000000;
+	}
+	.row
+	{
+		height: 40px;
+		width: 700px;
+	}
+	.lbl1
+	{
+		height: 40px;
+		width: 350px;
+		padding: 0 0 0 250px;
+		float: left;
+	}
+	.lbl3
+	{
+		height: 40px;
+		width: 350px;
+		padding: 0 0 0 130px;
+		float: left;
+	}
+	.txtbox_container, .lbl_container
+	{
+		height: 40px;
+		width: 350px;
+		float: left;
+	}
+	.btn-warning
+	{
+		background-color: orange;
+		border-color: black;
+	}	
+	select
+	{
+		font-family: sans-serif;
+		font-size: 14px;
+		width: 140px;
+	}
+	input, button
+	{
+		font-family: sans-serif;
+		font-size: 16px;
+	}
+	</style>
+	<script type="text/javascript">
+	function deleteRow(row_no)
+	{
+	    document.getElementById('operation'+row_no).innerHTML = "Delete";
+	}
+	function editRow(row_no)
+	{
+		document.getElementById('operation'+row_no).innerHTML = "Edit";
+		document.getElementById('BU_code'+row_no).disabled = false;
+		document.getElementById('zone_code'+row_no).disabled = false;
+		document.getElementById('country_code'+row_no).disabled = false;
+	}
+	function updateRecords()
+	{
+	    var x=document.getElementById('Table1');
+	    var new_row = x.rows[1].cloneNode(true);
+	    var len = x.rows.length - 1;
+	    var addList = [],deleteList = [],editList = [],preCountryList = [];
+	    //alert(len);
+	    var i = 0;
+
+		if($("#operation").text() == "Delete")
+		{
+			
+			deleteList.push($('#country_code').val());
+		}
+		else if($("#operation").text() == "Edit")
+		{
+			
+			editList.push($('#country_code').val());
+			preCountryList.push($('#preCountry').attr('title'));
+		}
+		else if($("#operation").text() == "Add")
+		{
+			
+			addList.push($('#country_code').val());
+		}			
+	
+	    for(var i=1;i<len;i++)
+	    {
+			if($("#operation"+i).text() == "Delete")
+			{
+				
+				deleteList.push($('#country_code'+i).val());
+			}
+			else if($("#operation"+i).text() == "Edit")
+			{
+				
+				editList.push($('#country_code'+i).val());
+				preCountryList.push($('#preCountry'+i).attr('title'));
+			}
+			else if($("#operation"+i).text() == "Add")
+			{
+				
+				addList.push($('#country_code'+i).val());
+			}			
+	    }
+	    if(addList.length == 0)
+	    {
+	    	addList = null;
+	    }
+	    if(deleteList.length == 0)
+	    {
+	    	deleteList = null;
+	    }
+	    if(editList.length == 0)
+	    {
+	    	editList = null;
+	    }
+	    if(preCountryList.length == 0)
+	    {
+	    	preCountryList = null;
+	    }
+	    //alert(addList+"\n"+deleteList+"\n"+editList+"\n"+preCountryList);
+	    var userid = $('#user_id').val();
+	    //alert("AD User ID: "+$('#user_id').val()+"\nAdd : " + addList + "\nDelete : " + deleteList +"\nUpdate : " + editList + "\nPre_Country : " + preCountryList);
+
+	    	// inserting, deleting and updating the records in useraccesscontrolcountry table
+	        $.getJSON("/UAC/rest/uac/CUDCountryToUsers/"+userid+"/"+addList+"/"+deleteList+"/"+editList+"/"+preCountryList, 
+	        	function(add){
+	            	$.each(add, function(i, field){
+	            		
+	            });
+	        });
+	        $("#changeMSG").fadeIn('slow');
+			$("#changeMSG").fadeOut(5000);
+	}
+	function countryByZone()
+	{
+		var zoneCode = this.value;
+		var id = this.name;
+		$('#BU_code'+id).val("-- Please select --");
+		$('#country_code'+id).html("");
+		$('#country_code'+id).append(	            		
+	    $('<option></option>').val("-- Please select --").html("-- Please select --")); 
+		$(document).ready(function(){
+	    	
+	        $.getJSON("/UAC/rest/uac/getCountriesByZone/"+zoneCode, function(countryByZone){
+	            	$.each(countryByZone, function(i, field){
+	            	$('#country_code'+id).append(
+        			$('<option></option>').val(i).html(field));
+	            });
+	        });
+	    
+		});
+	}
+
+	function countryByBUCode()
+	{
+		var BUCode = this.value;
+		var id = this.name;
+		$('#zone_code'+id).val("-- Please select --");
+		$('#country_code'+id).html("");
+		$('#country_code'+id).append(	            		
+	    $('<option></option>').val("-- Please select --").html("-- Please select --")); 
+		$(document).ready(function(){
+	    	
+	        $.getJSON("/UAC/rest/uac/getCountriesBybuCode/"+BUCode, function(countryByZone){
+	            	$.each(countryByZone, function(i, field){
+	            	$('#country_code'+id).append(
+        			$('<option></option>').val(i).html(field));
+	            });
+	        });
+	    
+		});
+
+	}
+
+	var allZones;
+	var allBus;
+	var allCountries;
+
+	$(document).ready(function(){
+		//Getting all the zones for rest of the zone combo
+	    $.getJSON("/UAC/rest/uac/getAllZones", function(allZone){
+	    	allZones = allZone;
+	    });
+
+		//Getting all the BU Codes for first BU combo
+	    $.getJSON("/UAC/rest/uac/getAllBUs", function(allBU){
+	        allBus =allBU;
+	    });
+
+		//Getting all Countries for rest country combo
+	    $.getJSON("/UAC/rest/uac/getAllCountries", function(countries){
+	        	allCountries =countries;
+	    });
+
+	   
+	});
+
+	function intitiateFirstRecord()
+	{
+		$.each(allBus, function(i, field){
+    	$('#BU_code0').append(
+    			$('<option></option>').val(field).html(field)); 
+       	});
+		$.each(allZones, function(i, field)
+	    {
+        	$('#zone_code0').append(
+    			$('<option></option>').val(i).html(field));
+        });
+
+        $.each(allCountries, function(i, field){
+        	$('#country_code0').append(
+			$('<option></option>').val(i).html(field));
+        }); 
+	}
+
+	
+
+	function insComboBoxRow(disabled_val,count)
+	{
+		
+	    var x=document.getElementById('Table1');
+	    var new_row = x.rows[1].cloneNode(true);
+	    var len = x.rows.length;
+
+	    //new_row.cells[0].innerHTML = len;
+	    var inp0 = new_row.cells[0].getElementsByTagName('span')[0];
+	    inp0.innerHTML = len;
+	    inp0.id = inp0.id.replace('0',len-1);	
+	    //inp0.id += len-1;
+	    inp0.title = '';
+	    x.appendChild( new_row );
+	    var inp1 = new_row.cells[1].getElementsByTagName('select')[0];
+	   	inp1.id = inp1.id.replace('0',len-1);	
+	    //inp1.id += len-1;
+	    inp1.value = '';
+	    inp1.name = len-1;
+	    inp1.disabled = disabled_val;
+	    inp1.addEventListener("change", countryByBUCode);
+
+	    $.each(allBus, function(i, field){
+	        	$('#BU_code' + (len-1)).append(
+	    			$('<option></option>').val(field).html(field)); 
+	       	});
+
+	    var inp2 = new_row.cells[2].getElementsByTagName('select')[0];
+	    inp2.id = inp2.id.replace('0',len-1);
+	    //inp2.id += len-1;
+	    inp2.value = '';
+	    inp2.name = len-1;
+	    inp2.disabled = disabled_val;
+	    inp2.addEventListener("change", countryByZone);
+	    $.each(allZones, function(i, field)
+	    {
+        	$('#zone_code'+ (len-1)).append(
+    			$('<option></option>').val(i).html(field));
+        });
+	    var inp3 = new_row.cells[3].getElementsByTagName('select')[0];
+	    inp3.id = inp3.id.replace('0',len-1);
+	    //inp3.id += len-1;
+	    inp3.value = '';	
+	    inp3.name = len-1;
+	    inp3.disabled = disabled_val;    
+	    //x.appendChild( new_row );	
+	    $.each(allCountries, function(i, field){
+        	$('#country_code'+(len-1)).append(
+			$('<option></option>').val(i).html(field));
+        });    
+	    var inp4 = new_row.cells[4].getElementsByTagName('input')[0];
+	    inp4.id = inp4.id.replace('0',len-1);
+	    //inp4.id += len-1;
+	    inp4.name = len-1;
+	    inp4.value = 'Delete';	    
+	    x.appendChild( new_row );
+	    var inp5 = new_row.cells[5].getElementsByTagName('input')[0];
+	    inp5.id = inp5.id.replace('0',len-1);
+	    //inp5.id += len-1;
+	    inp5.value = 'Edit';
+	    inp5.name = len-1;
+	    x.appendChild( new_row );
+	    var inp6 = new_row.cells[6].getElementsByTagName('span')[0];
+	    inp6.id = inp6.id.replace('0',len-1);
+	    inp6.innerHTML = 'Add';
+	    //inp6.id += len-1;
+	    x.appendChild( new_row );
+
+
+
+	      
+	}
+
+	var getUserData = 1;
+	function getRecords()
+	{
+		var count = 0;
+		var user_id = $("#user_id").val();
+		
+		intitiateFirstRecord();
+		if(getUserData == 1)
+		{
+			count = 0;
+			//Getting all the BU Codes 
+			$.getJSON("/UAC/rest/uac/getDataByUser/" + user_id, function(dataByUser){
+		        	$.each(dataByUser, function(i, field){
+		        		
+		        		$('#zone_code'+count).val(field.zone).attr("disabled", "disabled");
+						$('#country_code'+count).val(field.country).attr("disabled", "disabled");
+						$('#preCountry'+count).attr("title",field.country);
+						$('#operation'+count).html("");
+						$('#BU_code'+count).val(field.bu).attr("disabled", "disabled");
+						count++;
+						if(count != dataByUser.length)
+						insComboBoxRow(false,count);
+
+		       	});	
+		    });
+		   
+		}
+	}
+	function getCookie() {
+		var cname = "ADUserID";
+	    var name = cname + "=";
+	    var ca = document.cookie.split(';');
+	    for(var i=0; i<ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0)==' ') c = c.substring(1);
+	        if (c.indexOf(name) == 0) {
+	            //alert("ADUserID : " + c.substring(name.length, c.length));
+	        }
+	    }
+	}
+	</script>
+</head>
+<body onclick="">
+	<div id="header_canvas">
+		<br/>
+			<!--h2 align="center">ABI User Maintenance</h2-->
+		<br/>
+	</div>		
+	<div id="main_canvas">
+	<br/>
+
+		<div id="row1" class="row">
+			<div id="r1c1" class="lbl_container" style="width: 280px;">
+				<!--span class="lbl1">User ID : </span-->
+			</div>
+			<div id="r1c2" class="txtbox_container">
+				<input id="user_id" type="text" name="user_id" value="1122" placeholder="Enter User ID" maxlength="5"/>
+			</div>
+		</div>
+
+		<div id="row4" class="row">
+			<div id="r4c1" class="lbl_container" style="width: 290px;">
+			<div class="lbl4">
+				
+			</div>
+			</div>
+			<div id="r4c2" class="txtbox_container">
+				<button type="button" class="btn btn-warning" onclick="javascript:getRecords();">Get Records!</button>
+			</div>
+		</div>		
+		<br/><br/>
+		<div id="row2" class="">
+			<div id="r2c1" class="">
+			    <table id="Table1" border="1">
+			        <tr>
+			            <td>S. No.</td>
+			            <td>Business Unit</td>
+			            <td>Zone</td>
+			            <td>Country</td>
+			            <td>Delete</td>
+			            <td>Edit</td>
+			            <td>Operation</td>
+			        </tr>
+			        <tr>
+			            <td>
+			            	<span id="preCountry0" value="">1</span>
+			            </td>
+			            <td>
+			            	<select id="BU_code0" value="0" onchange="countryByBUCode()">
+								<option value="-- Please select --">-- Please select --</option>
+							</select>
+						</td>
+			            <td>
+			            	<select id="zone_code0" value="0" onchange="countryByZone()">
+								<option value="-- Please select --">-- Please select --</option>
+							</select>
+			            </td>
+			            <td>
+			            <select id="country_code0">
+								<option value="-- Please select --">-- Please select --</option>
+						</select>
+			            <td><input type="button" id="delbutton0"  value="Delete" onclick="deleteRow(this.name)"/></td>
+			            <td><input type="button" id="editbutton0" value="Edit" onclick="editRow(this.name)"/></td>
+			            <td><span id="operation0">Add</span></td>
+			        </tr>
+			    </table>
+			</div>
+		</div>
+		<br/><br/>
+		<div id="row3" class="row">
+			<div id="r3c1" class="lbl_container">
+			<div class="lbl3" style="padding-right: 20px;">
+				<span id="changeMSG" style="display:none;">Changed Successfully!</span>
+				<button type="button" style="float: right;" class="btn btn-warning" id="addbutton" onclick="insComboBoxRow(false);">Add</button>
+			</div>
+			</div>
+			<div id="r3c2" class="txtbox_container">
+				<button type="button" class="btn btn-warning" onclick="javaScript:updateRecords();">Update</button>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

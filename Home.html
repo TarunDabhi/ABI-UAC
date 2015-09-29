@@ -1,0 +1,338 @@
+<html>
+<head>
+	<title>Sign-in</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  	<!--Added for submit button-->
+  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  
+	<style type="text/css">
+	body
+	{
+		/*background: url(bg.png) no-repeat;
+		/*position: -400px 0 0 0;*/
+		background-size: 1200px 670px;
+		background-color: #F7981D;
+		font-family: sans-serif;
+	}
+	#main_canvas
+	{
+		height:300px;
+		width:700px;
+		/*background-color:#777777;*/
+		margin-left: auto;
+		margin-right: auto;
+		color: #000000;
+	}
+	#header_canvas
+	{
+		height:120px;
+		width:700px;
+		/*background-color:#777777;*/
+		margin-left: auto;
+		margin-right: auto;
+		color: #FFFFFF;
+		font-size: 50px;
+	}
+	#signin:hover
+	{
+		text-decoration: underline;
+	}
+	.row
+	{
+		height: 40px;
+		width: 700px;
+	}
+	.lbl1
+	{
+		height: 40px;
+		width: 305px;
+		padding: 0 0 0 252px;
+		float: left;
+	}
+	.lbl2
+	{
+		height: 40px;
+		width: 305px;
+		padding: 0 0 0 256px;
+		float: left;
+	}	
+	.lbl3
+	{
+		height: 40px;
+		width: 350px;
+		padding: 0 0 0 280px;
+		float: left;
+	}
+	.txtbox_container, .lbl_container
+	{
+		height: 40px;
+		width: 305px;
+		float: left;
+	}
+	select
+	{
+		width: 140px;
+	}
+	textarea:focus, input:focus
+	{
+    	outline: 0;
+	}
+	#username:focus::-webkit-input-placeholder
+	{
+		color: #F7981D;
+	}
+	#password:focus::-webkit-input-placeholder
+	{
+		color: #F7981D;
+	}
+	#username
+	{
+		width: 220px;
+	    border: none;
+	    height: 25px;
+	    color: #FFFFFF;
+	    background-color: #F7981D;
+	    background-position: -455px -170px;
+	    border: solid 1px;
+    	padding: 5px;
+    	text-transform:uppercase;
+	}
+	#password
+	{
+		width: 220px;
+	    border: none;
+	    height: 25px;
+	    color: #FFFFFF;
+	    background-color: #F7981D;
+	    background-position: -600px -370px;	    
+		border: solid 1px;
+    	padding: 5px;
+    	text-transform:uppercase;
+	}
+	#username::-webkit-input-placeholder,
+	#password::-webkit-input-placeholder
+	{
+	  color: #FFFFFF;
+	  text-transform:capitalize;
+	}
+	span:hover
+	{
+		cursor: pointer;
+	}
+	span
+	{
+		color: #000000;
+		border-color: black;
+		width: 150px;
+		font-size: 20px;
+	}
+	.btn-warning
+	{
+		background-color: orange;
+		border-color: black;
+		width: 150px;
+		font-size: 20px;
+	}
+	#eye
+	{
+		cursor: pointer;
+	}
+	input
+	{
+		font-family: sans-serif;
+		font-size: 16px;
+	}
+	#link1, #link2, #link3, #link4
+	{
+		padding: 20px 0px 10px 80px;
+		font-weight: normal;
+		border: solid 1px white;
+	}
+	</style>
+	<script type="text/javascript">
+	function showHome()
+	{
+		if($("#username").val() =="admin" && $("#password").val() == "admin")
+		{
+			$("#username").val("");
+			$("#password").val("");
+			window.parent.location.href = "Home.html";			
+		}
+		else
+		{
+			$("#wrongCredential").fadeIn('slow');
+			$("#wrongCredential").fadeOut(4000);
+		}
+	}
+	function hidePassword()
+	{
+		$("#password").attr('type','password');
+	}
+	function showPassword()
+	{
+		$("#password").attr('type','text');
+	}
+	function setCookie() {
+		var cname = "ADUserID";
+		var cvalue = document.getElementById("username").value;
+	    var d = new Date();
+	    d.setTime(d.getTime() + (1*60*60*1000));//Expires after one hour
+	    var expires = "expires=" + d.toGMTString();
+	    document.cookie = cname+"="+cvalue+"; "+expires;
+	    //alert(document.cookie);
+	}
+
+	function getCookie() {
+		var cname = "ADUserID";
+	    var name = cname + "=";
+	    var ca = document.cookie.split(';');
+	    for(var i=0; i<ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0)==' ') c = c.substring(1);
+	        if (c.indexOf(name) == 0) {
+	            //name = c.substring(name.length, c.length);
+	            //$("#usernameval").text(name);
+	        }
+	    }
+	}
+	function delCookie() {
+		document.cookie='ADUserID=;expires=Thu, 01 Jan 1970 00:00:00 UTC';
+	}
+	
+
+	function checkCookie() {
+	    var user=getCookie("username");
+	    if (user != "") {
+	        alert("Welcome again " + user);
+	    } else {
+	       user = prompt("Please enter your name:","");
+	       if (user != "" && user != null) {
+	           setCookie("ADUserID", user, 30);
+	       }
+	    }
+	}
+	function change_page(page_no)
+	{
+
+		$('#link1, #link2, #link3, #link4').css('font-weight','normal');
+		$('#link1, #link2, #link3, #link4').css({"border-color": "#FFFFFF", 
+             				"border-width":"1px", 
+            				"border-style":"solid"});
+		/*if(document.getElementById("rightBlock").style.display=="block")
+		{
+			document.getElementById("rightBlock").style.display="none";
+			document.getElementById("page_display").style.height="670px"
+		}*/
+		if(page_no==0)
+		{
+			document.getElementById("page_display").src = "ABIUserMaintenance.html";
+			$('#link1').css('font-weight','bold');
+			$('#link1').css({"border-right-color": "", 
+             				"border-right-width":"0px", 
+            				"border-right-style":"solid"});
+
+			$('#headerTitle').text("User Access By Country");
+
+		}
+		else if(page_no==1)
+		{
+			document.getElementById("page_display").src = "countryAssignment.html";
+			$('#link2').css('font-weight','bold');
+			$('#link2').css({"border-right-color": "", 
+             				"border-right-width":"0px", 
+            				"border-right-style":"solid"});
+			$('#headerTitle').text("New Country Assignment");
+		}
+		else if(page_no==2)
+		{
+			document.getElementById("page_display").src = "ABIMeasureMaintenance.html";
+			$('#link3').css('font-weight','bold');
+			$('#link3').css({"border-right-color": "", 
+             				"border-right-width":"0px", 
+            				"border-right-style":"solid"});
+			$('#headerTitle').text("User Access By Category");
+		}
+		else if(page_no==3)
+		{
+			document.getElementById("page_display").src = "measureAssignment_V2.html";
+			$('#link4').css('font-weight','bold');
+			$('#link4').css({"border-right-color": "", 
+             				"border-right-width":"0px", 
+            				"border-right-style":"solid"});
+			$('#headerTitle').text("New Measure Assignment");
+		}
+		else if(page_no==99)
+		{
+			window.parent.location.href = "Login.html";
+		}	
+	}
+	var cname = "ADUserID";
+	var name = cname + "=";
+	var ca = document.cookie.split(';');
+	$(document).ready(function(){
+
+	    for(var i=0; i<ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0)==' ') c = c.substring(1);
+	        if (c.indexOf(name) == 0) {
+	            //return c.substring(name.length, c.length);
+	            name = c.substring(name.length, c.length);
+	            $("#usernameval").text(name);
+	        }
+	    }
+
+		$("#button1").click(function(){
+		  
+	        $("#abimg1").animate({
+	            height: 'toggle'
+	        });
+	    });
+
+	});
+	
+	</script>
+</head>
+<body onload="javaScript:getCookie()">
+	<div id="topBlock" style="height:150px;width:1250px;border-bottom: solid 1px white;">
+		<div id="headerLeftBlock" style="height:100px;width:275px;float:left;padding: 10px;">
+			<img src="img/AB_InBev_logo.png" style="height:100px;width:275px;">
+		</div>
+
+		<div id="headerMiddleBlock" style="height:100px;width:760px;float:left;color:#000000;">
+			<br/><br/>
+				<h2 id="headerTitle" align="center"></h2>
+			<br/>
+		</div>
+
+		<div id="headerRightBlock" style="height:100px;width:200px;float:right;padding: 75px 0 0 25px">
+			<span style="font-size: 16px;">Welcome </span><span id="usernameval"></span><br/>
+			<span style="font-size: 16px;" onclick="change_page(99)">Logout</span>
+		</div>
+	</div>
+
+	<div id="leftBlock" style="height:600px;width:260px;float:left;">
+		<div id="link1" href="#" onclick="change_page(0)" style="cursor:pointer;">
+			<img src="img/globe-orange.png" style="height:75px;width:75px;cursor:pointer;" onclick="change_page(0)"><br/>
+			<span style="margin-left:-70px;" onclick="change_page(0)">User Access By Country</span>
+		</div>
+		<div id="link2" href="#" onclick="change_page(1)" style="cursor:pointer;">
+			<img src="img/images.png" style="height:75px;width:75px;cursor:pointer;"><br/>
+			<span style="margin-left:-70px;">New Country Assignment</span>
+		</div>
+		<div id="link3" href="#" onclick="change_page(2)" style="cursor:pointer;">
+			<img src="img/icon_docpoint_0.png" style="height:75px;width:75px;cursor:pointer;"><br/>
+			<span style="margin-left:-70px;">User Access By Category</span>
+		</div>
+		<div id="link4" href="#" onclick="change_page(3)" style="cursor:pointer;">
+			<img src="img/analytics-icon.png" style="height:75px;width:75px;cursor:pointer;"><br/>
+			<span style="margin-left:-70px;">New Measure Assignment</span>
+		</div>
+	</div>	
+
+	<div id="rightBlock" style="height:600px;width:990px;float:left;">
+		<iframe id="page_display" src="" style="border:none;height:600px;width:950px;"></iframe>
+	</div>
+	<!--button id="button1" onmouseout="toggle()">show</button-->
+</body>
+</html>

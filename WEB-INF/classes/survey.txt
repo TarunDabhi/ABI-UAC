@@ -1,0 +1,117 @@
+{
+  "root": {
+    "surveys": {
+      "survey": {
+        "sid": "1",
+        "name": "Airport Service Quality",
+        "questionGroup": [
+          {
+            "name": "Flight Information",
+            "question": [
+              {
+                "qid": "2",
+                "qtype": "1",
+                "text": "Flight No"
+              },
+              {
+                "qid": "3",
+                "qtype": "1",
+                "text": "Flight Name"
+              },
+              {
+                "qid": "4",
+                "qtype": "1",
+                "text": "Destination"
+              }
+            ]
+          },
+          {
+            "name": " Destination",
+            "question": {
+              "qid": "6",
+              "qtype": "3",
+              "text": "Connection/ transfer at this airport?",
+              "option": [
+                {
+                  "value": "1",
+                  "#text": "Yes"
+                },
+                {
+                  "value": "1",
+                  "#text": "No"
+                }
+              ]
+            }
+          },
+          {
+            "text": "Airport Environment",
+            "question": [
+              {
+                "qid": "9",
+                "qtype": "6",
+                "text": "Cleanliness of airport terminal",
+                "option": [
+                  {
+                    "value": "1",
+                    "#text": "Poor"
+                  },
+                  {
+                    "value": "2",
+                    "#text": "Fair"
+                  },
+                  {
+                    "value": "3",
+                    "#text": "Good"
+                  },
+                  {
+                    "value": "4",
+                    "#text": "Very Good"
+                  },
+                  {
+                    "value": "5",
+                    "#text": "Excellent"
+                  },
+                  {
+                    "value": "6",
+                    "#text": "Did not notice"
+                  }
+                ]
+              },
+              {
+                "qid": "10",
+                "qtype": "6",
+                "text": "Ambience of the airport",
+                "option": [
+                  {
+                    "value": "1",
+                    "#text": "Poor"
+                  },
+                  {
+                    "value": "2",
+                    "#text": "Fair"
+                  },
+                  {
+                    "value": "3",
+                    "#text": "Good"
+                  },
+                  {
+                    "value": "4",
+                    "#text": "Very Good"
+                  },
+                  {
+                    "value": "5",
+                    "#text": "Excellent"
+                  },
+                  {
+                    "value": "6",
+                    "#text": "Did not notice"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
